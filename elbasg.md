@@ -88,3 +88,51 @@
 - Set low if requests are short
 
 # Auto Scaling Group (ASG)
+- The goal of an ASG is to
+    - Scale out (add EC2 instances) to match an increased load
+    - Scale in (remove EC2 instances) to match a decreased load
+    - Ensure we have a minimum and a maximum no. of machines running
+    - Automatically register new instances to a Load Balancer
+- Attributes
+    - A launch configuration
+        - AMI + instance type
+        - EC2 User data
+        - EBS Volumes
+        - Security Groups
+        - SSH Key Pair
+    - Min Size/ Max Size/ Initial Capacity
+    - Network + Subnets Information
+    - Load Balancer Information
+    - Scaling Policies
+
+## Auto Scaling Alarms
+- It is possible to scale an ASG based on CloudWatch alarms
+- An alarm monitors a metric (such as Average CPU)
+- Metrics are computed for the overall ASG instances
+- Based on the alarms can create scale out/scale in policies
+
+## Auto Scaling New Rules
+- Target Average CPU Usage
+- No. of requests on the ELB per instance
+- Average network in/ Average network out
+
+## Auto Scaling Custom Metric
+- We can auto scale based on a custom metric (eg no of connected users)
+- Send custom metric from application on EC2 to CloudWatch (PutMetric API)
+- Create CloudWatch alarm to react to low/high values
+- Use the CloudWatch alarm as the scaling policy for ASG
+
+## Scaling Policies
+- Target Tracking Scaling
+    - Most simple and easy to setup (eg I want the avg ASG CPU to stay at around 40%)
+- Simple/ Step Scaling
+    - When a CloudWatch alarm is triggered (eg CPU > 70%), then add 2 units
+    - When a CloudWatch alarm is triggered (eg CPU < 30%>), then remove 1
+- Scheduled Actions
+    - Aniticipate a scaling based on known usage patterns
+    - Eg. increase the min capacity to 10 at 5pm on Fridays
+
+## Scaling cooldowns
+- Cooldown period helps to ensure the your ASG doesn't launch or terminate additional instances before the previous scaling activity takes effect
+- We can create cooldowns that apply to a specific simple scaling policy
+- A scaling-specific cooldown period overrides the default cooldown period
