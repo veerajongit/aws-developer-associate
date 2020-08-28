@@ -47,3 +47,15 @@ Only the conenction needs inbound rule to allow port 22 for ssh connection
 - Spot instance: short workloads, for cheap, can lose instance (less reliable)
 - Dedicated instance: no other customer will share your hardware
 - Dedicated Host: book an entire physical server, control instance placement
+
+## Elastic Network Interfaces (ENI)
+- Logical component in a VPC that represents a virtual network card
+- Attributes
+  - Primary private IPv4, one or more secondary IPv4
+  - One Elastic IP (IPv4) per private IPv4
+  - One Public IPv4
+  - One or more security groups
+  - A MAC address
+ - Can create ENIs independently and attach them on the fly on EC2 instances for failover
+ - Bound to a specific AZ
+ 
