@@ -4,3 +4,4 @@
 * [AWS ELB + ASG](elbasg.md)
 * [EC2 Storage - EBS & EFS](ebsefs.md)
 * [RDS, Aurora & Elasticache](rdsaec.md)
+* [Route 53](route53.md)
