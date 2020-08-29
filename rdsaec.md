@@ -90,3 +90,62 @@
     - Up to 5 seconday (read-only) regions, replication lad is less than 1 second
     - Up to 16 Read replicas per secondary region
     - Promte another region as master within 1 minute
+
+# ElastiCache
+- Managed Redis or Memcached
+- Caches are in-memory databases with really high performance, low latency
+- Helps reduce load off of databases for read intensive workloads
+- Helps make your application stateless
+- Write Scaling using sharding
+- Read Scaling using Read Replicas
+- Multi AZ with failover capability
+- AWS takes case of OS maintenance/patching, optimizations, setup configuration, monitoring, failure recovery and backups
+
+## Redis
+- Multi AZ with Auto-Failover
+- Read Replicas to scale reads and high availability
+- Data durability using AOF persistence
+- Backup and restore feature
+
+## Memcached
+- Multi-node for partitioning of data (sharding)
+- Non persistent
+- No backup and restore
+- Mutli-threaded architecture
+
+## Caching implementation considerations
+- Is it safe to cache data? Data may be out of date, eventually consistent
+- Is caching effective for data?
+    - Pattern: data changing slowly, few keys are frequently needed
+    - Anti patterns: data changing rapidly, all large key space frequently needed
+- Is data structed well for caching
+    - eg key value caching or caching of aggregations results
+- Which caching desing pattern appropriate of us?
+    - Lazy loading/ Cache-aside/ Lazy population
+        - Pros
+            - Only requested data is cached (the cache isn't filled up with unused data)
+            - Node failures are not fatal (just increased latency to warm the cache)
+        - Cons
+            - Cache miss penalty that results in 3 round trips, noticeable delay for that request
+            - Stale data: data can be updated in the database and outdated in the cache
+    - Write Through
+        - Add or update cache when the database is updated
+            - Pros
+                - Data in cache is never stale, reads are quick
+                - Write penalty vs Read penalty (each write required 2 calls)
+            - Cons
+                - Missing Data until it is added/updated in the DB. Mitigation is to implement Lazy Loading strategy as well
+                - Cache churn - a lot of data will never be read
+- Cache evictions and Time-to-live (TTL)
+    - Cache eviction can occur in three ways
+        - You delete the item explicitly in the cache
+        - Item is evicted because the memory is full and it's not recently used (LRU)
+        - You can set an item time-to-live(TTL)
+    - TTL are helpful for any kind of data
+        - Leaderboard
+        - Comments
+        - Activity streams
+    - TTL can range from few seconds to hours or days
+    - If too many evictions happen due to memory, you should scale up or out
+
+_Quote : There are only two hard things in Computer Science: cache invalidation and naming things_
