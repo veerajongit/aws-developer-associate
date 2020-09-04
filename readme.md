@@ -6,3 +6,4 @@
 * [RDS, Aurora & Elasticache](rdsaec.md)
 * [Route 53](route53.md)
 * [VPC](vpc.md)
+* [AWS S3](s3.md)
